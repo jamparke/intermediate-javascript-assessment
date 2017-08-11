@@ -13,8 +13,13 @@
 // return the result of your updateAnimal invocation
 
 // CODE HERE...
-
-
+function callBinding (magicAnimals, updateAnimal, id) {
+  for (var i = 0; i < magicAnimals.length; i++) {
+    if (magicAnimals[i]['id'] === id) {
+      return updateAnimal.call(magicAnimals[i], 'Trogdor')
+    }
+  }
+}
 
 // *************
 // * PROBLEM 2 *
@@ -29,7 +34,13 @@
 
 // CODE HERE...
 
-
+function applyBinding (magicAnimals, updateAnimal, id) {
+  for (var i = 0; i < magicAnimals.length; i++) {
+    if (magicAnimals[i]['id'] === id) {
+      return updateAnimal.apply(magicAnimals[i], ['being majestic', 'eating rainbows'])
+    }
+  }
+}
 
 // *************
 // * PROBLEM 3 *
@@ -45,11 +56,16 @@
 // After the timeout is completed, the promise should be resolved with the new updated foo variable.
 // NOTE: Manually invoking your function here will alter the 'foo' variable before tests run, causing them to fail.
 
-var foo;
+var foo
 
 // CODE HERE...
-
-
+function promiseMe ($q) {
+  var defer = $q.defer()
+  setTimeout(function () {
+    defer.resolve(foo = 'bar')
+  }, 20)
+  return defer.promise
+}
 
 // *************
 // * PROBLEM 4 *
@@ -64,3 +80,18 @@ var foo;
 // and then resolve the array as you complete your promise.
 
 // CODE HERE...
+
+function emailList ($q, $http) {
+  var defer = $q.defer()
+  var newArr = []
+  $http({
+    method: 'GET',
+    url: '/api/users'
+  }).then(function (response) {
+    for (var i = 0; i < response.data.length; i++) {
+      newArr.push(response.data[i].email)
+    }
+    defer.resolve(newArr)
+  })
+  return defer.promise
+}
